@@ -43,12 +43,16 @@ vim.cmd("colorscheme vague")
 vim.keymap.set('n', '<leader>f', ':Pick files<CR>')
 vim.keymap.set('n', '<leader>h', ':Pick help<CR>')
 vim.keymap.set('n', '<leader>z', ':ZenMode<CR>')
- 
+
 
 -- MINI
 require "mini.pick".setup()
 require "mini.ai".setup()
-require "mini.git".setup()
+require "mini.git".setup({
+	integrations = {
+		commit_popup = true, -- lets you commit from a popup
+	}
+})
 require "mini.files".setup()
 require "mini.completion".setup()
 require "mini.snippets".setup()
