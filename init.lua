@@ -7,6 +7,7 @@ vim.o.tabstop = 4
 vim.o.swapfile = false
 vim.g.mapleader = " "
 vim.o.winborder = "rounded"
+vim.o.termguicolors = true
 
 vim.keymap.set('n', '<leader>o', ':update | source<CR>')
 vim.keymap.set('n', '<leader>w', ':write<CR>')
@@ -35,7 +36,6 @@ vim.pack.add({
 	{ src = "https://github.com/chomosuke/typst-preview.nvim" },
 	{ src = "https://github.com/folke/zen-mode.nvim" },
 })
-
 
 vim.cmd("colorscheme vague")
 
@@ -110,7 +110,6 @@ local mf = require('mini.files')
 vim.keymap.set('n', '<leader>e', ':lua MiniFiles.open()<CR>')
 
 -- SESSIONS
-
 vim.keymap.set("n", "<leader>ss", function()
 	vim.ui.input({ prompt = "Session name: " }, function(input)
 		if input and input ~= "" then
@@ -126,11 +125,20 @@ vim.keymap.set('n', '<leader>sd', function()
 	ms.select('delete')
 end, { desc = 'Delete session' })
 
+vim.keymap.set('n', '<leader>st', function()
+	local cmd = [[kitty @ launch --tab nvim -c 'lua require("mini.sessions").select("read")']]
+	vim.fn.system(cmd)
+end, { desc = "Load session in new Kitty tab" })
 
 
 -- LSP
 
-vim.lsp.enable({ "lua_ls", "tinymist", "pyright" })
+vim.lsp.enable({ "lua_ls", "tinymist", "pyright", "jsonls" })
+vim.lsp.enable({
+	cmd = { "css-languageserver" },
+	args = { "--stdio" },
+	filetypes = { "css" }
+})
 
 local diagnostics_enabled = true
 function ToggleDiagnostics()
